@@ -278,32 +278,6 @@ router.get("/postlist", async (req,res) => {
     })
   });
 });
- 
-// 테스트
-// router.get("/postlist/post", async (req,res) => {
-//   const postlists = await Post.find(req.body);
-//   console.log(...postlists)
-//   const { postId } = req.body
-//   const commentlists = await comments.find({ postId });
-//   const results = postlists.map((postlists) => {
-//     return {
-//       제목: postlists.title,
-//             이름: postlists.name,
-//             내용: postlists.description,
-//             // pw: postlists.pw,
-//             작성일: postlists.date,
-//     };
-//   });
-// const comment = commentlists.map((commentlists) => {
-//   return {
-//   댓글: commentlists.comment,     
-//   };
-// });
-
-// res.json({
-//   게시물목록: results ,댓글 : comment
-// });
-// });
 
 router.put("/get", async (req, res) => {
     let {postId,description,title} = req.body;
