@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* .bob{
+  margin-left: 870px;
+  width: 500px;
+  margin-top: 400px;
+} */
+.page-header{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 30px;
+    border-bottom: 0px;
+    background-color: #000000;
+    text-align: center;
+    color: white;
+}
+
+.bloc{
+    
+    margin-left: 45%;
+    margin-top: 200px;
+
+}
+
+.coco{
+    
+    margin-left: 45%;
+    margin-top: 30px;
+
+}
+
+.pp{
+    margin-top: 30px;
+    margin-left:45%;
+}
+
+
+
+</style>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const id = urlParams.get("postId")
+    $(document).ready(function () {
+            test()
+        })
+    function test() {
+        let key = localStorage.getItem("token")
+        // console.log(jwt.verify(key,"this이즈super개쩌는token"));
+        
+    $.ajax({
+            url: `/post/postlist/${id}`,
+            type: 'GET',
+            data: {},
+            success: function (게시물,댓글) {
+                let title = 게시물.게시글목록[0].제목
+                let name = 게시물.게시글목록[0].이름
+                let content = 게시물.게시글목록[0].내용
+                let date = 게시물.게시글목록[0].작성일
+                
+                
+                 
+
+                 let temp_html = `<blockquote class="bloc">
+  <p>Contents : ${content}</p>
+  <footer>Title : ${title}<cite title="Source Title"> <p>작성일 : ${date}</p> </cite></footer>
+</blockquote><div class="coco"><button onclick="postedit(${id})">게시물 수정</button> <button onclick="dell(${id})">게시물 삭제</button></div>
+                
+                                        `
+            $('#list').append(temp_html)
+                
+            for(let i = 0; i < 게시물.댓글목록.length; i++){
+                let coid = 게시물.댓글목록[i].commentId
+                
+                    let comm = 게시물.댓글목록[i].댓글
+                let commdate = 게시물.댓글목록[i].작성일
+                let commentId = 게시물.댓글목록[i].commentId
+                let key = 게시물.댓글목록[i].키
+                
+                console.log(key)
+                console.log(localStorage.getItem("token"))
+
+                if(key===localStorage.getItem("token")){
+                    let temp_html = `
+                
+                <p>댓글:${comm} <button onclick="edit(${coid})">수정</button>  <button onclick="del(${commentId})">삭제</button></p>
+                `
+                $('#comment').append(temp_html)
+                }else{
+                    let temp_html = `
+                
+                <p>댓글:${comm}</p>
+                `
+                $('#comment').append(temp_html)
+                }
+                
+                }
+            // let com_html = `<li>댓글 내용:${}</li>`
+            }})
+    }
+
+    function del(commentId){
+        if (!localStorage.getItem("token")) {
+                alert("로그인하세요!");
+                window.location.href = "/";
+                return;
+            }
+            let x = localStorage.getItem("token")
+        $.ajax({
+            type:"delete",
+            url:'/comment',
+            contentType: "application/json;charset=utf-8",
+           
+            data:JSON.stringify({commentId : commentId,
+                                    key:localStorage.getItem("token")}),
+            success: function (data) {
+                alert(data)
+               window.location.reload()
+            }
+        })
+    }
+
+    function dell(postId){
+        if (!localStorage.getItem("token")) {
+                alert("로그인하세요!");
+                window.location.href = "/";
+                return;
+            }
+            
+        $.ajax({
+            type:"delete",
+            url:'/post/postlist',
+            contentType: "application/json;charset=utf-8",
+           
+            data:JSON.stringify({postId : postId,
+            key:localStorage.getItem("token")}),
+            success: function (data) {
+                alert(data)
+               window.location.href="/"
+            }
+        })
+    }
+
+    
+
+    function postedit(q){
+        if (!localStorage.getItem("token")) {
+                alert("로그인하세요!");
+                window.location.href = "/";
+                return;
+            }
+
+            let x = localStorage.getItem("token")
+        $.ajax({
+            url: `/post/editpost`,
+            type: 'GET',
+            headers: {
+                    authorization: `${localStorage.getItem("token")}`
+                },
+            data: {key : x},
+            success: function (res) {
+        window.location.href = `/editpost/?postId=${id}`
+            }      
+        })
+    }
+
+    function edit(q){
+        if (!localStorage.getItem("token")) {
+                alert("로그인하세요!");
+                window.location.href = "/";
+                return;
+            }
+
+            let x = localStorage.getItem("token")
+        $.ajax({
+            url: `/comment/edit`,
+            type: 'GET',
+            headers: {
+                    authorization: `${localStorage.getItem("token")}`
+                },
+            data: {authorization: x},
+            success: function (res) {
+        window.location.href = `/edit/?postId=${id}&commentId=${q}`
+            }      
+        })
+    }
+
+    function comment(){
+        if (!localStorage.getItem("token")) {
+                alert("로그인 후 작성 가능합니다.");
+                return;
+            }
+        let comment = $('#com').val()
+        let qwe = localStorage.getItem("token")
+        
+        $.ajax({
+            url: `/comment`,
+            type: 'POST',
+            contentType: "application/json;charset=utf-8",
+            data:JSON.stringify({
+                댓글:comment,
+                postId:id,
+                key: qwe
+
+            }),
+            success : function (res) {
+                if(res){
+                     alert(res)
+                     
+                location.reload() 
+                }else{
+                    alert("댓글을 입력해주세요.")
+                }
+              
+            }  
+        })
+    }
+
+        
+        
+    
+    
+    
+    
+        //     $.ajax({
+    //         url: '/detaillist',
+    //         type: 'GET'
+    //         , data: {}
+    //         ,success: function(res){
+                
+    //             console.log({info})
+    //         }
+    //     })
+    // }
+
+    // function test() {
+    //     $.ajax({
+    //         url: '/list',
+    //         type: 'GET',
+    //         data: {postId:id},
+    //         success: function (data) {
+                
+                
+            
+    //     for(let i = 0; i < data.length; i++){
+    //             let postid = data[i].postId
+    //             let date = data[i].date
+    //             let title = data[i].title
+    //             let description = data[i].description
+    //         let temp_html = ``
+            
+    //         temp_html = `<li><a onclick="re()">게시글 번호 : ${postid}게시글제목 : ${title}</a></li>`
+    //                                     //href="/post/postlist/${postid}"
+
+    //             $('#list').append(temp_html)
+    //         }
+    //     }
+    //     })
+    //     }
+
+            
+        
+    
+    </script>
+<body>
+    <div class="page-header">
+        <h1>  Contents  <small id="name"></small></h1>
+     </div>
+     <div class="op">
+   <div>
+   <p id="lolo"></p>
+   </div>
+    <div class="bob" id="list">
+    </div>
+    <div class="pp">
+    <p><input id="com" placeholder="댓글작성"></input> <button onclick="comment()">작성</button></p>
+    <div id="comment">
+    
+    </div>
+    </div>
+</body>
+</html>

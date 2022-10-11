@@ -1,0 +1,12 @@
+node_modules
+.env
+jwt.js
+verifyJWT.js
+test.text
+```
+package.json
+package-lock.json
+config.json
+config
+
+dddss

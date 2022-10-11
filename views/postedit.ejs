@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .po
+{
+    margin: 0 auto;
+        width: 500px;
+        margin-top: 50px;
+}
+
+ .text-center{
+    margin-top: 250px;
+ }
+</style>
+<script>
+    
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const postid = urlParams.get("postId")
+    
+
+    $(document).ready(function () {
+            
+            edit(postid)
+        })
+        
+
+    
+    function edit(postId){
+        $.ajax({
+            type:'post',
+            url:"/post/get",
+            contentType: "application/json;charset=utf-8",
+            data:JSON.stringify({
+                postId : postId,
+                key : localStorage.getItem("token"),
+            }),
+            success:function(res){
+                if(res==="본인만 수정 가능합니다.")
+                {alert(res)
+                location.href = `/detail/?postId=${postid}`}
+                console.log(res.data[0].description)
+
+                let title = res.data[0].title
+                let description = res.data[0].description
+
+                temp_html = `     
+             <div>
+                <p><input id="제목" placeholder="${title}" type="text" id="inputtext5" class="form-control" aria-describedby="textHelpBlock"></p>
+             <p><textarea id= "text" class="form-control" rows="3">${description}</textarea></p>
+             <p><button onclick="editpost(${postId})">Edit</button></p>
+             <div>     `      
+        
+
+
+           $("#description").append(temp_html)
+
+
+
+
+
+            }
+        })
+    }
+    
+    
+    
+    
+    
+    function editpost(postId){
+        if($('#제목').val()===''){
+            alert('제목을 입력하세요');
+            return;
+        }
+        if($('#text').val()===''){
+            alert('내용을 입력하세요');
+            return;
+        }
+    let description = $("#text").val()
+    let title = $("#제목").val()
+            $.ajax({
+                url: `/post/get`,
+                type: 'put',
+                contentType: "application/json;charset=utf-8",
+            data:JSON.stringify({ postId: postId,
+                description: description,
+            title:title}),
+                    success: function (res) {
+                        alert("수정되었습니다.")
+                        window.location.href = "/detail/?postId="+postId
+        }
+    })
+}
+    
+
+
+</script>
+<body>
+    <p class="text-center">Edit post</p>
+    <div id="description" class="po">
+     
+    <!-- <input placeholder="비밀번호를 입력해주세요."></input> -->
+    
+    
+    </div>
+</body>
+</html>

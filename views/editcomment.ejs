@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .po
+{
+    margin: 0 auto;
+        width: 500px;
+        margin-top: 50px;
+}
+
+ .text-center{
+    margin-top: 250px;
+    margin-right: 100px;
+ }
+</style>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const postid = urlParams.get("postId")
+    const commentid = urlParams.get("commentId")
+    
+
+    $(document).ready(function () {
+            
+            test()
+        })
+        
+
+    
+    function edit(commentId){
+
+        if($('#text').val()===''){
+            alert('내용을 입력하세요');
+            return;
+        }
+        let comment = $('#text').val()
+        
+        $.ajax({
+            type:'put',
+            url:"/comment",
+            contentType: "application/json;charset=utf-8",
+            data:JSON.stringify({
+                commentId : commentId,
+                comment : comment
+            }),
+            success:function(res){
+                alert(res)
+                location.href = `/detail/?postId=${postid}`
+            }
+        })
+    }
+    
+    
+    
+    
+    function test(){
+        
+            // console.log(postid,commentid)
+    $.ajax({
+        url: `/comment/get`,
+        type: 'GET',
+        data: {postId : postid,
+        commentId : commentid},
+        success: function (...res) {
+            console.log(res[0].댓글[0].commentId)
+            let comment = res[0].댓글[0].comment
+            let commentId = res[0].댓글[0].commentId
+
+            let html = `     
+            <div>
+            <p><textarea id= "text" class="form-control" rows="3">${comment}</textarea></p>
+            <p><button onclick="edit(${commentId})">Edit</button></p>
+            <div>           
+        
+            `
+
+            $("#comment").append(html)
+        
+        
+        }
+    })
+}
+    
+
+
+</script>
+<body>
+    <p class="text-center">Edit comment</p>
+    <div id="comment" class="po">
+     
+    <!-- <input placeholder="비밀번호를 입력해주세요."></input> -->
+    
+    
+    </div>
+</body>
+</html>
