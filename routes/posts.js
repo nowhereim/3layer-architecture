@@ -1,25 +1,9 @@
 const express = require("express")
 const router = express.Router() 
-const Post = require("../schemas/post");
 const { User,CommenT,PosT,likekey } = require("../models");
 const { Op}  = require("sequelize");
 
 
-
-// const Cart = require("../schemas/cart");
-// router.post("/goods/:goodsId/cart", async (req, res) => {
-//   const { goodsId } = req.params;
-//   const { quantity } = req.body;
-
-//   const existsCarts = await Cart.find({ goodsId: Number(goodsId) });
-//   if (existsCarts.length) {
-//     return res.json({ success: false, errorMessage: "이미 장바구니에 존재하는 상품입니다." });
-//   }
-
-//   await Cart.create({ goodsId: Number(goodsId), quantity: quantity });
-
-//   res.json({ result: "success" });
-// });
 let aa = [{"tktle":"title","content":"content","name":"name","pw":"pw"}]
 
 
@@ -35,27 +19,21 @@ router.get("/detail/:id", async function(req,res){
 
 router.get("/postlist/:postId", async (req,res) => {
 const { postId } = req.params;
-// const postlist = await Post.find({ postId });
 const postlist = await PosT.findAll({
   where: {
     [Op.or]: [{postId}],
   },
 });
-// console.log(postlist)
 
 let i = Date.now()
-// console.log(i)
 
 const commentlists = await CommenT.findAll({
   where: {
     [Op.or]: [{postId}],
   },
 });
-// console.log(commentlists)
-// console.log(commentlists)
 const results = postlist.map((postlists) => {
   return {
-          // 게시물고유번호: postlists.postId,
           제목: postlists.title,
           이름: postlists.name,
           내용: postlists.description,
@@ -103,8 +81,6 @@ router.post("/get", async (req,res) =>{
 //좋아요 구현
 router.post("/like", async (req,res) => {
   const { postId,key } = req.body;
-  // console.log(postId)
-  // console.log(postId,key)
 
 
   let x = await PosT.findAll({ 
@@ -125,7 +101,6 @@ router.post("/like", async (req,res) => {
  res.send("success")
   
   }else{
-    // await Post.updateOne({ postId:postId }, { $inc: { like: -1 }, $pull : { likekey: key } });
     await likekey.destroy({where:{postId,likekey:key}})
     await PosT.update({like:downcount}, {where: {postId}});
     res.send("descount")
@@ -152,7 +127,6 @@ var today = new Date();
 
 var hours = ('0' + today.getHours()).slice(-2); 
 var minutes = ('0' + today.getMinutes()).slice(-2);
-// var seconds = ('0' + today.getSeconds()).slice(-2); 
 
 var timeString = hours + '시 ' + minutes
 //   + ':' + seconds;
@@ -161,17 +135,13 @@ let timeset = dateString + "일 " + timeString + "분"
 
 	let { title , description , key} = req.body;
   const createdposts = await PosT.create({timeset,title,description,key})
-  // console.log(timeset)
-  // const createdposts = await Post.create({ title,description, key });
 
   res.json({ post: createdposts });
   console.log(Post)
 });
 
 router.get("/list2",async function(req,res){
-  // key:req.query
   let {key} = req.query
-  // console.log(key)
   let x = await likekey.findAll({
       where:{
           [Op.or]:[{likekey:key}]
@@ -185,8 +155,6 @@ router.get("/list2",async function(req,res){
     });
   
     let zz = {...results}
-  //   console.log(zz)
-  // console.log(results)
   let qwe = []
   
   for(let i = 0; i < results.length; i++){
@@ -198,7 +166,6 @@ router.get("/list2",async function(req,res){
       qwe.push(y)
   }
   let p = qwe.sort(function(a,b){
-      // console.log(`a는 = ${a[0]},b는 = ${b[0].like}`)
       return b[0].like-a[0].like
   })
   console.log(p[0])
@@ -210,7 +177,6 @@ router.get("/like",async function(req,res){
 })
 
 router.get("/list",async function(req,res){
-  // console.log(req.query)
   let co = await likekey.findAll({
       where:{
           likekey:req.query.key
@@ -234,23 +200,10 @@ router.get("/list",async function(req,res){
 })
 
 router.get("/detail/?", async function(req,res){
-  // console.log(req.headers);
-  // console.log(req.headers.authorization.split(" "))
-  // console.log(res.locals)
-  // console.log(11111111111)
-  // res.sendFile(__dirname + "/views/detail.html")
   return res.render("detail")
   
   
 })
-
-// router.get("/detaillist/?postId",async function(req,res){
-//   let find = await Posts.find(req.params);
-//   let comment = await comments.find(req.params);
-//   // console.log(find,comment);
-//   res.json({게시글 : find, 댓글 : comment})
-
-// })
 
 router.get("/editpost", async (req,res) => {
   res.render("postedit")
@@ -259,7 +212,6 @@ router.get("/editpost", async (req,res) => {
  //전체조회
 router.get("/postlist", async (req,res) => {
     const postlists = await Post.find();
-    // console.log(postlists)
     
     
   const results = postlists.map((postlists) => {
@@ -267,7 +219,6 @@ router.get("/postlist", async (req,res) => {
 			제목: postlists.title,
             이름: postlists.name,
             내용: postlists.description,
-            // pw: postlists.pw,
             작성일: postlists.date,
 		};
   });
@@ -281,12 +232,9 @@ router.get("/postlist", async (req,res) => {
 
 router.put("/get", async (req, res) => {
     let {postId,description,title} = req.body;
-    // const existspost = await Post.find({ postId: Number(postId) });
 
      await PosT.update({title:title}, {where: {postId}});
      await PosT.update({description:description}, {where: {postId}});
-      // await Post.updateOne({ postId: Number(postId) }, { $set: { title } });
-      // await Post.updateOne({ postId: Number(postId) }, { $set: { description } });
       
     
     
@@ -300,70 +248,14 @@ router.delete("/postlist", async (req, res) => {
       [Op.or]: [{postId,key}],
     }
      });
-  // const existspost = await Post.find({ postId,key });
   if(existspost.length === 0){
     res.send("본인만 삭제 가능합니다.")
   }else{
     await PosT.destroy({where:{postId,key}})
     await likekey.destroy({where:{postId}})
-    // let x = await Post.deleteOne({ postId, key });
     res.send("삭제완료")
   }
   
 });
-
-  // body랑 params랑 잘 숙지하자... 13시간 날렸다..
-
-
-
-
-
-
-
-
-
-// router.put("/goods/:goodsId/cart", async (req, res) => {
-//     const { goodsId } = req.params;
-//     const { quantity } = req.body;
-//     if(quantity < 1){
-//         res.status(404).json({errorMessage : "수량을 0개로 어떻게 변경해 병신아"})
-//     }
-  
-//     const existsCarts = await Cart.find({ goodsId: Number(goodsId) });
-//     if (existsCarts.length) {
-//       await Cart.updateOne({ goodsId: Number(goodsId) }, { $set: { quantity } });
-//     }
-  
-//     res.json({ success: true });
-//   })
-
-//   router.delete("/goods/:goodsId/cart", async (req, res) => {
-//     const { goodsId } = req.params;
-  
-//     const existsCarts = await Cart.find({ goodsId });
-//     if (existsCarts.length > 0) {
-//       await Cart.deleteOne({ goodsId });
-//     }
-  
-//     res.json({ result: "success" });
-//   });
-
-//   router.get("/goods/cart", async (req, res) => {
-//   const carts = await Cart.find();
-//   const goodsIds = carts.map((cart) => cart.goodsId);
-
-//   const goods = await Goods.find({ goodsId: goodsIds });
-
-//   res.json({
-//       carts: carts.map((cart) => ({
-//           quantity: cart.quantity,
-//           goods: goods.find((item) => item.goodsId === cart.goodsId),
-//       })),
-//   });
-// });
-
-
-
-
 
 module.exports = router;

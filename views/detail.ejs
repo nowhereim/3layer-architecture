@@ -189,7 +189,7 @@
                 },
             data: {authorization: x},
             success: function (res) {
-        window.location.href = `/edit/?postId=${id}&commentId=${q}`
+        window.location.href = `/comment/edit/?postId=${id}&commentId=${q}`
             }      
         })
     }
@@ -206,6 +206,9 @@
             url: `/comment`,
             type: 'POST',
             contentType: "application/json;charset=utf-8",
+            headers: {
+                    authorization: `Bearqer ${localStorage.getItem("token")}`
+                },
             data:JSON.stringify({
                 댓글:comment,
                 postId:id,

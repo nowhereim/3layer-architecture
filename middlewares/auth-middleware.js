@@ -8,30 +8,38 @@ module.exports = async (req, res, next) => {
     const { authorization } = req.headers;
     console.log(authorization)
     const [tokenType, tokenValue] = String(authorization).split(' ');
-    console.log(tokenType !== `Bearqer`)
-    console.log(tokenType)
-    if (tokenType !== "Bearer") {
-        return res.status(401).send({
+    console.log(tokenType + 1111111)
+    if (tokenType !== "Bearqer") {
+        return res.status(400).send({
             errorMessage: '로그인 후 사용하세요',
         
         });;
     }
-
-  
-        const { userId } = jwt.verify(tokenValue, "this이즈super개쩌는token");
-        console.log(userId)
-        // let x = await User.findAll({
-        //     where: {
-        //         [Op.or]: [{ ID:userId }],
-        //     },
-        // })
     
-       
-            // res.locals.user = x[0].dataValues.ID;
-            // throw new Error("여기까지 정상적으로 온다.");
-            console.log(res.locals.user+111111111)
-            
-            next()
+
+                
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ0YWVqanlhbmciLCJpYXQiOjE2NjU2NjIwOTMsImV4cCI6MTY2NTY2Mzg5M30.VWYKNBLMxZdqepohK_jaEvMl16nQHwPBLzuZbmxhUHs"
+            const { userId } = jwt.verify(token, process.env.ATS);
+            console.log(userId)
+            let x = await User.findAll({
+                where: {
+                    [Op.or]: [{ ID:userId }],
+                },
+            })
+            console.log(x)
+        
+        
+                res.locals.user = x[0].dataValues.ID;
+                // throw new Error("여기까지 정상적으로 온다.");
+                console.log(res.locals.user)
+                
+                next()
+
+
+
+
+    
+   
            
         
 
