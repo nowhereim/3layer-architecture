@@ -39,7 +39,7 @@
         })
         
 
-    
+    //게시글 수정 
     function edit(postId){
         $.ajax({
             type:'post',
@@ -52,7 +52,7 @@
             success:function(res){
                 if(res==="본인만 수정 가능합니다.")
                 {alert(res)
-                location.href = `/detail/?postId=${postid}`}
+                location.href = `/post/detail/?postId=${postid}`}
                 console.log(res.data[0].description)
 
                 let title = res.data[0].title
@@ -92,7 +92,7 @@
             title:title}),
                     success: function (res) {
                         alert("수정되었습니다.")
-                        window.location.href = "/detail/?postId="+postId
+                        window.location.href = "/post/detail/?postId="+postId
         }
     })
 }

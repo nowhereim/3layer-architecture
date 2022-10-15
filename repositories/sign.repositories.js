@@ -1,45 +1,44 @@
 // repositories/posts.repository.js
 
-const { Posts } = require('../models');
+const { User } = require('../models');
+const { Op}  = require("sequelize");
 
-class PostRepository {
-  findAllPost = async () => {
-    const posts = await Posts.findAll();
-
-    return posts;
-  };
-
-  findPostById = async (postId) => {
-    const post = await Posts.findByPk(postId);
-
-    return post;
-  };
-
-  createPost = async (nickname, password, title, content) => {
-    const createPostData = await Posts.create({
-      nickname,
-      password,
-      title,
-      content,
+class SignRepository {
+  logIn = async (id,pw) => {
+    const existsUsers = await User.findAll({
+      where: {
+        [Op.or]: [{ ID:id }],
+      },
     });
+    return existsUsers;
 
-    return createPostData;
+
+  };  
+
+  regisTeridcheck = async (아이디) => {
+    const existsUsers = await User.findAll({
+      where: {
+          [Op.or]: [{ ID:아이디 }],
+      },
+      });
+      return existsUsers;
+
   };
+  regisTer = async (아이디,비밀번호) => {
+    let user = User.create({
+      id : 아이디,
+      pw :비밀번호,
+      date:new Date()},
+      )
+      return user;
+  }
 
-  updatePost = async (postId, password, title, content) => {
-    const updatePostData = await Posts.update(
-      { title, content },
-      { where: { postId, password } }
-    );
+  logOut = async () => {
+    
+    
+  } 
 
-    return updatePostData;
-  };
-
-  deletePost = async (postId, password) => {
-    const updatePostData = await Posts.destroy({ where: { postId, password } });
-
-    return updatePostData;
-  };
 }
 
-module.exports = PostRepository;
+
+module.exports = SignRepository;

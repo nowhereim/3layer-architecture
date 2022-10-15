@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const postRouter = require("./routes/posts.js")
 const commentRouter = require("./routes/comments.js")
-const port = 3000;
+const port = 4000;
 const sign = require("./routes/sign.js");
 const cors = require('cors');
 app.use(cors({

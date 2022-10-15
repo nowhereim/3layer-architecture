@@ -41,6 +41,9 @@ class CommentsService {
 
   //댓글생성
   createComment = async (댓글,postId,key) => {
+    if(댓글 === ''){
+      return res.send("댓글을 입력해주세요")
+    }
     // 저장소(Repository)에게 데이터를 요청합니다.
     const createcomment = await this.commentsRepository.createComments(댓글,postId,key)
     return {

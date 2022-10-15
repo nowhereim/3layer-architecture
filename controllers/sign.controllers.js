@@ -1,55 +1,42 @@
 // controllers/posts.controller.js
 
-const PostService = require('../services/posts.service');
+const SignService = require('../services/sign.services');
 
-class PostsController {
-  postService = new PostService();
+class SignsController {
+  
+  signService = new SignService();
 
-  getPosts = async (req, res, next) => {
-    const posts = await this.postService.findAllPost();
-
-    res.status(200).json({ data: posts });
+  logIn = async (req, res, next) => {
+    const {id,pw} = req.body
+    let login = await this.signService.logIn(id,pw)
+    res.status(200).json(login)
   };
 
-  getPostById = async (req, res, next) => {
-    const { postId } = req.params;
-    const post = await this.postService.findPostById(postId);
+  regisTer = async (req, res, next) => {
+    const 아이디 = req.body.id;
+    const 비밀번호 = req.body.pw
+    const 비밀번호체크 = req.body.pw2
 
-    res.status(200).json({ data: post });
+
+    let test = await this.signService.regisTer(아이디,비밀번호,비밀번호체크)
+    res.send(test);
   };
 
-  createPost = async (req,res) => {
-    const {title,content,nickname,password} = req.body;
-    console.log(req.body)
+  logOut = async (req,res) => {
+    res.clearCookie("token");
+        res.redirect("/");
+        }
+
+  getloginPage = async (req, res, next) => {
     
-    const post = await this.postService.createPost(nickname, password, title, content)
-    
-    res.status(200).json({data:post})
-  }
 
-  updatePost = async (req, res, next) => {
-    const { postId } = req.params;
-    console.log(req.body)
-    const { password, title, content } = req.body;
-
-    const updatePost = await this.postService.updatePost(
-      postId,
-      password,
-      title,
-      content
-    );
-
-    res.status(200).json({ data: updatePost });
+    res.render("lotest")
   };
 
-  deletePost = async (req, res, next) => {
-    const { postId } = req.params;
-    const { password } = req.body;
-
-    const deletePost = await this.postService.deletePost(postId, password);
-
-    res.status(200).json({ data: deletePost });
+  getregisterPage = async (req, res, next) => {
+   
+    res.render("register copy")
   };
 }
 
-module.exports = PostsController;
+module.exports = SignsController;

@@ -1,54 +1,68 @@
 // controllers/posts.controller.js
 
-const PostService = require('../services/posts.service');
+const PostService = require('../services/posts.services');
 
 class PostsController {
   postService = new PostService();
 
-  getPosts = async (req, res, next) => {
-    const posts = await this.postService.findAllPost();
-
-    res.status(200).json({ data: posts });
+detailPage = async (req, res, next) => {
+  res.render("detail")
   };
 
-  getPostById = async (req, res, next) => {
+  detailPost = async (req,res,next) => {
     const { postId } = req.params;
-    const post = await this.postService.findPostById(postId);
+    const detailPost = await this.postService.detailPost(postId)
 
-    res.status(200).json({ data: post });
+    res.status(200).json(detailPost)
+  }
+
+  likepostPage = async (req,res,next) => {
+    res.render("likelist")
+  }
+
+  likePost = async (req,res,next) => {
+    const { postId,key } = req.body;
+    const likePost = await this.postService.likePost(postId,key)
+    
+    res.status(200).send(likePost)
+  }
+
+  createPost = async (req,res,next) => {
+    const { title , description , key} = req.body;
+    const createPost = await this.postService.createPost(title , description , key)
+    res.status(200).json({post: createPost})
+  }
+
+
+
+  editPost = async (req,res,next) => {
+    let { postId,key } = req.body
+    const editPost = await this.postService.editPost(postId,key)
+
+    res.status(201).json(editPost)
+  }
+
+  postingPage = async (req, res, next) => {
+    res.render("posting")
   };
 
-  createPost = async (req,res) => {
-    const {title,content,nickname,password} = req.body;
-    console.log(req.body)
-    
-    const post = await this.postService.createPost(nickname, password, title, content)
-    
-    res.status(200).json({data:post})
+  editpostPage = async (req,res) => {
+    res.render("postedit")
   }
 
   updatePost = async (req, res, next) => {
-    const { postId } = req.params;
-    console.log(req.body)
-    const { password, title, content } = req.body;
+    let {postId,description,title} = req.body;
 
-    const updatePost = await this.postService.updatePost(
-      postId,
-      password,
-      title,
-      content
-    );
-
-    res.status(200).json({ data: updatePost });
-  };
+    const updatePost = await this.postService.updatePost(postId,description,title);
+    res.send(updatePost);
+};
 
   deletePost = async (req, res, next) => {
-    const { postId } = req.params;
-    const { password } = req.body;
+    const { postId,key } = req.body;
 
-    const deletePost = await this.postService.deletePost(postId, password);
+    const deletePost = await this.postService.deletePost(postId,key);
 
-    res.status(200).json({ data: deletePost });
+    res.status(200).send(deletePost);
   };
 }
 

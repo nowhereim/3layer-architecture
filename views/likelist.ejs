@@ -91,7 +91,7 @@
         })
 
 
-
+        
     function test() {
         if(localStorage.getItem("token")){
             let temp_html = ``
@@ -114,17 +114,13 @@
                 key: localStorage.getItem("token")
             },
             success: function ({data}) {
-                
-                
-            
-
         for(let i = 0; i < data.length; i++){
-                let postid = data[i][0].postId
-                let date = data[i][0].createdAt
-                let title = data[i][0].title
-                let description = data[i][0].description
-                let like = data[i][0].like
-                let time = data[i][0].timeset
+                let postid = data[i].postId
+                let date = data[i].createdAt
+                let title = data[i].title
+                let description = data[i].description
+                let like = data[i].like
+                let time = data[i].timeset
                 
 
             let temp_html = ``

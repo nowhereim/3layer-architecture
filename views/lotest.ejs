@@ -129,20 +129,15 @@
                         // pw2: pw2
                     }),
                     success: function(res, status, xhr) {
-                        if(res==="아이디를 입력해주세요"){
-                           return alert(res)
-                        }
-                        if(res==="비밀번호를 입력해주세요"){
-                            return alert(res)
-                        }
-
                         //쿠키에 토큰 저장
-
-                       
-                        if(res) {
+                        if(res.token === undefined){
+                                alert(res)
+                            }else{
                             localStorage.setItem("token", res.token);
                             alert("로그인성공")
                             location.href = "/"}
+                            
+                        
                         // else{alert("로그인실패 아이디와 비밀번호를 확인해주세요.")}
                         
                     
