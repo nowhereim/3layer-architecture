@@ -1,60 +1,55 @@
-// services/posts.service.js
+// controllers/posts.controller.js
 
-const PostRepository = require('../repositories/posts.repository');
+const PostService = require('../services/posts.service');
 
-class PostService {
-  postRepository = new PostRepository();
+class PostsController {
+  postService = new PostService();
 
-  findAllPost = async () => {
-    // 저장소(Repository)에게 데이터를 요청합니다.
-    const allPost = await this.postRepository.findAllPost();
-    console.log(`여긴 서비스 입니다. ${allPost}`)
-    // 호출한 Post들을 가장 최신 게시글 부터 정렬합니다.
-    allPost.sort((a, b) => {
-      return b.createdAt - a.createdAt;
-    })
+  getPosts = async (req, res, next) => {
+    const posts = await this.postService.findAllPost();
 
-    // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
-    return allPost.map(post => {
-      return {
-        postId: post.postId,
-        nickname: post.nickname,
-        title: post.title,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt
-      }
-    });
-  }
+    res.status(200).json({ data: posts });
+  };
 
-  createPost = async (nickname, password, title, content) => {
-    // 저장소(Repository)에게 데이터를 요청합니다.
-    const createPost = await this.postRepository.createPost(nickname,password, title, content)
-    return {
-        postId: createPost.postId,
-        nickname: createPost.nickname,
-        password: createPost.password,
-        title: createPost.title,
-        content: createPost.content
-    }
-  }
+  getPostById = async (req, res, next) => {
+    const { postId } = req.params;
+    const post = await this.postService.findPostById(postId);
+
+    res.status(200).json({ data: post });
+  };
+
+  createPost = async (req,res) => {
+    const {title,content,nickname,password} = req.body;
+    console.log(req.body)
     
-  updatePost = async (title,content) => {
-    // 저장소(Repository)에게 데이터를 요청합니다.
-    const updatePostData = await this.postRepository.updatePost(title,content);
-
-
-    // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
-    return {
-      postId: updatePostData.null,
-      nickname: updatePostData.nickname,
-      title: updatePostData.title,
-      content: updatePostData.content,
-      createdAt: updatePostData.createdAt,
-      updatedAt: updatePostData.updatedAt,
-    };
+    const post = await this.postService.createPost(nickname, password, title, content)
+    
+    res.status(200).json({data:post})
   }
 
+  updatePost = async (req, res, next) => {
+    const { postId } = req.params;
+    console.log(req.body)
+    const { password, title, content } = req.body;
 
+    const updatePost = await this.postService.updatePost(
+      postId,
+      password,
+      title,
+      content
+    );
+
+    res.status(200).json({ data: updatePost });
+  };
+
+  deletePost = async (req, res, next) => {
+    const { postId } = req.params;
+    const { password } = req.body;
+
+    const deletePost = await this.postService.deletePost(postId, password);
+
+    res.status(200).json({ data: deletePost });
+  };
 }
 
-module.exports = PostService;
+module.exports = PostsController;

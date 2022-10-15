@@ -4,8 +4,6 @@ const { User,CommenT,PosT,likekey } = require("../models");
 const { Op}  = require("sequelize");
 
 
-let aa = [{"tktle":"title","content":"content","name":"name","pw":"pw"}]
-
 
 
 
@@ -24,8 +22,6 @@ const postlist = await PosT.findAll({
     [Op.or]: [{postId}],
   },
 });
-
-let i = Date.now()
 
 const commentlists = await CommenT.findAll({
   where: {
@@ -69,7 +65,6 @@ router.post("/get", async (req,res) =>{
       [Op.or]: [{postId,key}],
     },
   });
-  console.log(x)
   if (x.length === 0){
     res.send("본인만 수정 가능합니다.")
   }else{
@@ -168,7 +163,6 @@ router.get("/list2",async function(req,res){
   let p = qwe.sort(function(a,b){
       return b[0].like-a[0].like
   })
-  console.log(p[0])
   res.json({ data:p })
 })
 

@@ -1,21 +1,21 @@
 // services/posts.service.js
+const CommentsRepository = require('../repositories/comments.repositories');
 
-const PostRepository = require('../repositories/posts.repository');
+class CommentsService {
+  commentsRepository = new CommentsRepository();
 
-class PostService {
-  postRepository = new PostRepository();
-
-  findAllPost = async () => {
+  //전체댓글조회
+  findAllComment = async () => {
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const allPost = await this.postRepository.findAllPost();
-    console.log(`여긴 서비스 입니다. ${allPost}`)
+    const allcomments = await this.commentsRepository.findAllcomments();
+   
     // 호출한 Post들을 가장 최신 게시글 부터 정렬합니다.
-    allPost.sort((a, b) => {
+    allcomments.sort((a, b) => {
       return b.createdAt - a.createdAt;
     })
 
     // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
-    return allPost.map(post => {
+    return allcomments.map(post => {
       return {
         postId: post.postId,
         nickname: post.nickname,
@@ -26,35 +26,48 @@ class PostService {
     });
   }
 
-  createPost = async (nickname, password, title, content) => {
+  //특정댓글조회
+  findPostById = async (postId,CommentsId) => {
+    const commentOne = await this.commentsRepository.findPostById(postId,CommentsId);
+    const results = commentOne.map((commentOne) => {
+      return {
+      댓글: commentOne.comment,
+      코멘트아이디: commentOne.commentId
+      };
+    });
+    console.log(results)
+    return {전체댓글목록 : results}
+  }
+
+  //댓글생성
+  createComment = async (댓글,postId,key) => {
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const createPost = await this.postRepository.createPost(nickname,password, title, content)
+    const createcomment = await this.commentsRepository.createComments(댓글,postId,key)
     return {
-        postId: createPost.postId,
-        nickname: createPost.nickname,
-        password: createPost.password,
-        title: createPost.title,
-        content: createPost.content
+        postId: createcomment.postId,
+        nickname: createcomment.nickname,
+        password: createcomment.password,
+        title: createcomment.title,
+        content: createcomment.content
     }
   }
-    
-  updatePost = async (title,content) => {
+  //댓글 수정
+  updateComment = async (comment,commentId) => {
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const updatePostData = await this.postRepository.updatePost(title,content);
+    const updateCommentData = await this.commentsRepository.updateComment(comment,commentId);
 
 
     // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
-    return {
-      postId: updatePostData.null,
-      nickname: updatePostData.nickname,
-      title: updatePostData.title,
-      content: updatePostData.content,
-      createdAt: updatePostData.createdAt,
-      updatedAt: updatePostData.updatedAt,
-    };
+    return updateCommentData
+  }
+
+  deleteComments = async (commentId) => {
+    await this.commentsRepository.deleteComments(commentId);
+    
+    return ;
   }
 
 
 }
 
-module.exports = PostService;
+module.exports = CommentsService;

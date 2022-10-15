@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
     
 
                 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ0YWVqanlhbmciLCJpYXQiOjE2NjU2NjIwOTMsImV4cCI6MTY2NTY2Mzg5M30.VWYKNBLMxZdqepohK_jaEvMl16nQHwPBLzuZbmxhUHs"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJxd2UiLCJpYXQiOjE2NjU4MTkyMTEsImV4cCI6MTY2NTgyMTAxMX0.OmIwZsmlompY7mq_TfsfnDJwGBlRmB0aHhd2xyMbvMQ"
             const { userId } = jwt.verify(token, process.env.ATS);
             console.log(userId)
             let x = await User.findAll({

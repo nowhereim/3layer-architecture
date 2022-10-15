@@ -1,45 +1,52 @@
 // repositories/posts.repository.js
 
-const { Posts } = require('../models');
+const { CommenT } = require('../models');
+const { Op}  = require("sequelize");
+class CommentsRepository {
 
-class PostRepository {
+  //댓글 전체 조회
   findAllPost = async () => {
-    const posts = await Posts.findAll();
+    const comments = await CommenT.findAll();
 
-    return posts;
+    return comments;
   };
-
-  findPostById = async (postId) => {
-    const post = await Posts.findByPk(postId);
-
-    return post;
-  };
-
-  createPost = async (nickname, password, title, content) => {
-    const createPostData = await Posts.create({
-      nickname,
-      password,
-      title,
-      content,
+  //댓글 수정 지정 조회
+  findPostById = async (postId,CommentsId) => {
+    const comment = await CommenT.findAll({
+      where: {
+        [Op.or]: [{postId,commentId:CommentsId}],
+      },
     });
-
-    return createPostData;
+    return comment;
   };
 
-  updatePost = async (postId, password, title, content) => {
-    const updatePostData = await Posts.update(
-      { title, content },
-      { where: { postId, password } }
-    );
 
-    return updatePostData;
+  //댓글작성
+  createComments = async (댓글,postId,key) => {
+    const createCommentData = await CommenT.create({
+      comment :댓글,
+      postId :postId,
+      key: key})
+
+    return createCommentData;
   };
 
-  deletePost = async (postId, password) => {
-    const updatePostData = await Posts.destroy({ where: { postId, password } });
 
-    return updatePostData;
+  //댓글수정
+  updateComment = async (comment,commentId) => {
+    const updateCommentData = await CommenT.update({comment:comment}, {where: {commentId}});
+    
+
+    return updateCommentData;
+  };
+
+
+  //댓글삭제
+  deleteComments = async (commentId) => {
+    await CommenT.destroy({ where: { commentId } });
+
+    return;
   };
 }
 
-module.exports = PostRepository;
+module.exports = CommentsRepository;

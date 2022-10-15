@@ -59,7 +59,7 @@
             }),
             success:function(res){
                 alert(res)
-                location.href = `/detail/?postId=${postid}`
+                location.href = `/post/detail/?postId=${postid}`
             }
         })
     }
@@ -75,10 +75,10 @@
         type: 'GET',
         data: {postId : postid,
         commentId : commentid},
-        success: function (...res) {
-            console.log(res[0].댓글[0].commentId)
-            let comment = res[0].댓글[0].comment
-            let commentId = res[0].댓글[0].commentId
+        success: function (res) {
+            console.log(res.전체댓글목록[0].댓글)
+            let comment = res.전체댓글목록[0].댓글
+            let commentId = res.전체댓글목록[0].코멘트아이디
 
             let html = `     
             <div>
