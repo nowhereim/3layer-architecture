@@ -3,8 +3,20 @@ const { Comments, sequelize, Sequelize } = require('../models');
 const authMiddleware = require('../middlewares/authMiddleware');
 const authUserMiddleware = require('../middlewares/authUserMiddleware');
 const Joi = require('joi');
-
 const router = express.Router();
+Commentscontroller = require("../controllers/comments")
+commentscontroller = new Commentscontroller();
+
+
+
+
+
+
+
+
+router.post("/:postId",authMiddleware,commentscontroller.createComment)
+
+
 
 const RE_COMMENT = /^[\s\S]{1,100}$/; // 댓글 정규 표현식
 
@@ -40,31 +52,10 @@ router
       });
     }
   })
-  //댓글 생성
-  .post(authMiddleware, async (req, res) => {
-    try {
-      const resultSchema = commentSchema.validate(req.body);
-      if (resultSchema.error) {
-        return res.status(412).json({
-          errorMessage: '데이터 형식이 올바르지 않습니다.',
-        });
-      }
 
-      const { postId } = req.params;
-      const { comment } = resultSchema.value;
-      const { userId } = res.locals.user;
-
-      await Comments.create({ postId, userId, comment });
-      return res.status(201).json({ message: '댓글을 작성하였습니다.' });
-    } catch (error) {
-      console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
-      return res.status(400).json({
-        errorMessage: '댓글 작성에 실패하였습니다.',
-      });
-    }
-  });
 
 router
+
   .route('/:commentId')
   // 댓글 수정
   .put(authMiddleware, async (req, res) => {
