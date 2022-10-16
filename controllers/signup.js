@@ -19,7 +19,7 @@ class SignupController {
   
         if (password !== confirm) {
             return res.status(412).send({
-              errorMessage: '패스워드가 일치하지 않습니다.',
+              errorMessage: '패스워드 확인이 일치하지 않습니다.',
             });
           }
           if (nickname.search(re_nickname) === -1) {

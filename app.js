@@ -19,6 +19,4 @@ http.listen(port, () => {
   console.log(`Start listen Server: ${port}`);
 });
 
-console.log("test")
-
 module.exports = http;
