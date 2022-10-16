@@ -9,7 +9,7 @@ class Commentscontroller{
 
         const createcomment = await this.commentsservice.createComment(postId,comment,userId);
         
-        res.status(201).json({결과 : "댓글 작성 성공"});
+        res.status(201).json({createcomment});
     }
 
 
