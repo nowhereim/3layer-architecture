@@ -3,7 +3,7 @@ console.log(Comments)
 
 class Commentsrepository{
     createComment =  async(postId,comment,userId) => {
-        const a = await Comments.create({ postId, userId, comment });
+        await Comments.create({ postId, userId, comment });
         return "댓글 작성 성공 입니다링 구링~"
     }
 }
