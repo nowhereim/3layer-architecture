@@ -11,7 +11,7 @@ class Commentsservice {
     commentrepository = new commentsrepository()
 
     createComment = async (postId, comment, userId) => {
-const resultSchema = commentSchema.validate(comment);
+const resultSchema = commentSchema.validate({comment:comment});
 if (resultSchema.error) {
         return '데이터 형식이 올바르지 않습니다.'
     }
