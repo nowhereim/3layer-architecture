@@ -24,6 +24,7 @@ const RE_CONTENT = /^[\s\S]{1,3000}$/; // 게시글 내용 정규 표현식
 router
   .route('/')
   // 모든 게시글 데이터를 반환하는 함수
+  // ㅇㅇㅇ
   .get(async (req, res) => {
     try {
       const likes = await Likes.findAll();
