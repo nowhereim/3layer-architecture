@@ -21,7 +21,6 @@ class SignupService {
 
   findSameNickname = async (nickname) => {
     const findSameNickname = await this.signupRepository.findSameNickname(nickname)
-
     return findSameNickname
   }
 }
