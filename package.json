@@ -4,6 +4,7 @@
   "description": "항해99 Node.js 숙련 주차 프로젝트입니다.",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettify": "prettier --write *.js **/*.js"
   },
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "lint": "^0.7.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.7.1"
   }
 }
