@@ -96,7 +96,7 @@ class PostRepository {
     }
   };
 
-  deletePost = async (userId, postId) => {
+  deletePost = async (postId,userId) => {
     try {
       const deleteCount = await Posts.destroy({
         where: { userId, postId },

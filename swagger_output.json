@@ -1,0 +1,479 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0 저세상 버전",
+    "title": "응 끝났어~",
+    "description": "이것만 있으면 이해 쌉가능"
+  },
+  "host": "localhost:3030",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Posts",
+      "description": "Endpoints 당구링"
+    }
+    ],
+  "schemes": [
+    "http",
+    "https",
+    "비밀의방"
+  ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-API-KEY",
+      "description": "any description..."
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/posts/like": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/posts/{postId}/like": {
+      "put": {
+        "description": "",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/posts/": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "412": {
+            "description": "Precondition Failed"
+          }
+        }
+      }
+    },
+    "/posts/{postId}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "412": {
+            "description": "Precondition Failed"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/comments/{postId}": {
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "코멘트 불러오기",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "코멘트 작성입니다.",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body", 
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": { 
+                  "example": "코멘트쓰셈"
+                }
+
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "412": {
+            "description": "Precondition Failed"
+          }
+        }
+      }
+    },
+    "/comments/{commentId}": {
+      "put": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "코멘트 수정",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body", 
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": { 
+                  "example": "수정할 코멘트 작성하세요."
+                }
+
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "412": {
+            "description": "Precondition Failed"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Comments"
+        ],
+        "description": "코멘트 삭제 입니다.",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/login/": {
+      "post": {
+        "tags": [
+          "Sign"
+        ],
+        "description": "로그인 하는겁니다",
+       "parameters": [
+        {
+          "name": "body", 
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "nickname": { 
+                "example": "아이디"
+              },
+              "password": {
+                "example": "패뜨워드"
+              }
+            }
+          }
+        }
+        ],
+        
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "412": {
+            "description": "Precondition Failed"
+          }
+        }
+      }
+    },
+    "/signup/": {
+      "post": {
+        "tags": [
+          "Sign"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "412": {
+            "description": "Precondition Failed"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "comments": {
+      "type": "object",
+      "properties": {
+        "commentId": {
+          "type": "integer",
+          "example": "auto increment"
+        },
+        "postId": {
+          "type": "integer",
+          "example": "1"
+        },
+        "userId": {
+          "type": "string",
+          "example": "baby"
+        },
+        "comment": {
+          "type": "string",
+          "example": "홀리몰리짱짱"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+      "userId": {
+      "type": "int",
+      "example": 1
+      },
+      "nickname": {
+      "type": "string",
+      "example": "aaa"
+      },
+      "password": {
+      "type": "string",
+      "example": "1111"
+      }
+      },
+      "required": ["nickname", "password"]
+      },
+    "AddUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Jhon Doe"
+        },
+        "age": {
+          "type": "number",
+          "example": 29
+        },
+        "about": {
+          "type": "string",
+          "example": ""
+        }
+      },
+      "required": [
+        "name",
+        "age"
+      ]
+    }
+  }
+}

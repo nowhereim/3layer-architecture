@@ -44,10 +44,12 @@ class Commentscontroller{
 
         console.log(Commentdelete)
         res.status(201).json({메세지입니당구링:Commentdelete})
+    
     }
+    
 
 
-
+    
 
     
 }

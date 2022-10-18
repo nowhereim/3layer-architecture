@@ -22,6 +22,7 @@ class LoginController {
     postLogin = async (req, res, next) => {
         try {
         let {nickname, password} = await loginSchema.validateAsync(req.body);
+        console.log(nickname, password)
         const loginUser = await this.loginService.findUser(nickname)
 
         if (!loginUser) {return res.status(412).send({errorMessage: '닉네임 또는 패스워드를 확인해주세요.'})}
